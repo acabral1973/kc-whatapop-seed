@@ -17,35 +17,6 @@ export class ProductService {
   getProducts(filter: ProductFilter = undefined): Observable<Product[]> {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Pink Path                                                        |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Pide al servidor que te retorne los productos ordenados de más   |
-    | reciente a menos, teniendo en cuenta su fecha de publicación.    |
-    |                                                                  |
-    | En la documentación de 'JSON Server' tienes detallado cómo hacer |
-    | la ordenación de los datos en tus peticiones, pero te ayudo      |
-    | igualmente. La querystring debe tener estos parámetros:          |
-    |                                                                  |
-    |   _sort=publishedDate&_order=DESC                                |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Red Path                                                         |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Pide al servidor que te retorne los productos filtrados por      |
-    | texto y/ por categoría.                                          |
-    |                                                                  |
-    | En la documentación de 'JSON Server' tienes detallado cómo       |
-    | filtrar datos en tus peticiones, pero te ayudo igualmente. La    |
-    | querystring debe tener estos parámetros:                         |
-    |                                                                  |
-    |   - Búsqueda por texto:                                          |
-    |       q=x (siendo x el texto)                                    |
-    |   - Búsqueda por categoría:                                      |
-    |       category.id=x (siendo x el identificador de la categoría)  |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
     | Yellow Path                                                      |
     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
     | Pide al servidor que te retorne los productos filtrados por      |
@@ -59,8 +30,55 @@ export class ProductService {
     |       state=x (siendo x el estado)                               |
     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Red Path                                                         |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Controlo si se ha pasado el parámetro filter, en caso positivo   |
+    | proceso el filtro para aplicarlo correctamente, construyendo una |
+    | string 'filtro' que aplica todos los filtros necesarios en el    |
+    | formato requerido por 'JSON Server'. También controlo que el     |
+    | filtro de categría sea distinto de 0 para el caso en el que luego|
+    | de aplicar un filtro de categoría se quite dicho filtro, en ese  |
+    | caso la categoría del filtro viene seteada a 0 y ello provoca que|
+    | la petición del cliente Http reciba  una lista de productos      |
+    | vacía (todos los productos cuyo id de categoría es igual a 0)    |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    let filtro = '';
+
+    if (filter) {
+      if (filter.text) {
+        filtro = '&q=' + filter.text;
+        console.log('Aplicado filtro de texto:', filter.text);
+      }
+      if (filter.category && +filter.category !== 0) {
+        filtro = filtro + '&category.id=' + filter.category;
+        console.log('Aplicado filtro de categoría:', filter.category);
+      }
+    } else {
+        console.log('Mostrando todos los productos (no aplican filtros)');
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Pink Path                                                         |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Para aplicar la ordenación de datos en la petición basta con      |
+    | incluir los parámetros indicados (_sort=publishedDate&_order=DESC)|
+    | en el GET del cliente Http. Usamos ? antes para indicar que       |
+    | lo que siguen son parámetros                                      |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Red Path                                                         |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | si se habían aplicado filtros en el formulario, la variable      |
+    | 'filtro' tendrá almacenada una cadena de caracteres con el filtro|
+    | en el formato requerido por 'JSON Server', en caso contrario,    |
+    | estará vacía y no se aplicará ningún filtro                      |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
     return this._http
-      .get(`${this._backendUri}/products?_sort=publishedDate&_order=DESC`)
+      .get(`${this._backendUri}/products?_sort=publishedDate&_order=DESC&${filtro}`)
       .map((data: Response): Product[] => Product.fromJsonToList(data.json()));
   }
 
