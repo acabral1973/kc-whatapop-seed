@@ -4,16 +4,15 @@
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
   | Green Path                                                       |
   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Un clic en el botón de compra debería enviar un evento al        |
-  | componente padre.                                                |
+  | Configuro el evento click del button para que active el manejador|      | notifica este eventoi al componente padre (products-collection)  |
   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
   | Purple Path                                                      |
   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Aplica el siguiente formato al precio del producto:              |
-  |   - 1 dígito mínimo (parte entera)                               |
-  |   - 2 dígitos mínimo y máximo (parte decimal)                    |
+  | Aplico el pipe number (number:'1.2-2') al precio del producto.   |
+  | También podría aplicarse el pipe Currency, pero como ya estaba   |
+  | símbolo de € después del número asumí que se prefería number.    |
   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
   <button
@@ -22,7 +21,7 @@
     [class.success]="data.state === 'selling'"
     [class.secondary]="data.state === 'sold'">
       <span *ngIf="data.state === 'selling'">
-        Comprar por {{ data.price }} €
+        Comprar por {{ data.price | number:'1.2-2' }} €
       </span>
       <span *ngIf="data.state === 'sold'">
         Ver detalles
