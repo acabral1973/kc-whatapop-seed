@@ -8,7 +8,18 @@
       </li>
     </ul>
   </div>
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Yellow Path                                                          |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Una vez que la lista de productos 'reseteables se queda vacía, solo  |
+  | se indicaba que ya estaban todos los productos a la venta.           |
+  | He agregado un vínculo para volver a la lista de productos.          |
+  | ¿Esto da puntos de usabilidad?    ;)                                 |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
   <div *ngIf="products?.length === 0" class="text-center">
-    <span>Todos los productos están a la venta.</span>
+    <span>Todos los productos están a la venta... </span>
+    <a routerLink="/products">(volver a la lista de productos)</a>
   </div>
 </div>

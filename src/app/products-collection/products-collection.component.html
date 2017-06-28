@@ -4,12 +4,13 @@
   </div>
   <div *ngIf="products?.length > 0" class="small-up-2 medium-up-4 large-up-6">
 
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Green Path                                                       |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Suscribe el componente ProductComponent al evento que hayas      |
-    | definido en él para notificar los clics sobre los productos.     |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Green Path                                                          |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Suscribo el componente ProductsCollection al evento (clickEnComprar)| | definido en el componente hijo 'Product' y asigno un manejador que  |
+    | mostrará los detalles del producto cuando se emita el evento que    |
+    | notifica el click sobre el botón de 'Comprar'                       |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <app-product
       *ngFor="let product of products"
@@ -24,11 +25,12 @@
 </div>
 <div class="text-center">
 
-  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Yellow Path                                                      |
-  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Modifica el elemento <a> para que navegue a la ruta  '/reset'.   |
-  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Yellow Path                                                          |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Uso la directiva RouterLink para que el vínculo navegue a la ruta    |
+  | '/reset'.                                                            |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-  <a>Reset de productos</a>
+  <a routerLink="/reset">Resetear productos</a>
 </div>

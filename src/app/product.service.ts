@@ -17,20 +17,6 @@ export class ProductService {
   getProducts(filter: ProductFilter = undefined): Observable<Product[]> {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Yellow Path                                                      |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-    | Pide al servidor que te retorne los productos filtrados por      |
-    | estado.                                                          |
-    |                                                                  |
-    | En la documentación de 'JSON Server' tienes detallado cómo       |
-    | filtrar datos en tus peticiones, pero te ayudo igualmente. La    |
-    | querystring debe tener estos parámetros:                         |
-    |                                                                  |
-    |   - Búsqueda por estado:                                         |
-    |       state=x (siendo x el estado)                               |
-    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
     | Red Path                                                         |
     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
     | Controlo si se ha pasado el parámetro filter, en caso positivo   |
@@ -42,6 +28,12 @@ export class ProductService {
     | caso la categoría del filtro viene seteada a 0 y ello provoca que|
     | la petición del cliente Http reciba  una lista de productos      |
     | vacía (todos los productos cuyo id de categoría es igual a 0)    |
+    |                                                                  |
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Yellow Path                                                      |
+    |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    | Adicionalmente si se ha indicado filtro de estado lo agrego a la |
+    | string que procesará los filtros en la petición GET              |
     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     let filtro = '';
@@ -54,6 +46,10 @@ export class ProductService {
       if (filter.category && +filter.category !== 0) {
         filtro = filtro + '&category.id=' + filter.category;
         console.log('Aplicado filtro de categoría:', filter.category);
+      }
+      if (filter.state) {
+        filtro = filtro + '&state=' + filter.state;
+        console.log('Aplicado filtro de estado:', filter.state);
       }
     } else {
         console.log('Mostrando todos los productos (no aplican filtros)');

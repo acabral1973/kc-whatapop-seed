@@ -17,6 +17,13 @@ export class ProductsCollectionComponent implements OnDestroy, OnInit {
   products: Product[];
   private _filterStream$: Subject<ProductFilter> = new Subject;
 
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Green Path                                                       |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Inyecto el Router de la app como dependencia en el constructor   |
+  | selección del componente                                         |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
   constructor(private _productService: ProductService, private _router: Router) { }
 
   ngOnInit(): void {
@@ -34,15 +41,13 @@ export class ProductsCollectionComponent implements OnDestroy, OnInit {
     this._filterStream$.next(filter);
   }
 
-  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Green Path                                                       |
-  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-  | Maneja el evento del componente ProductComponent que indica la   |
-  | selección de un producto y navega a la dirección correspondiente.|
-  | Recuerda que para hacer esto necesitas inyectar como dependencia |
-  | el Router de la app. La ruta a navegar es '/products', pasando   |
-  | como parámetro el identificador del producto.                    |
-  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | Green Path                                                         |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+  | El método implementado para mostrar los detalles del producto      |
+  | seleccionado, navega a la ruta '/products', pasando como parámetro |
+  | el id del producto seleccionado                                    |
+  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
   mostratDetalleProducto(producto: Product): void {
     this._router.navigate(['products', producto.id]);
